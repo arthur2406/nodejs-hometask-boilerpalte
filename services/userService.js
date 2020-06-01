@@ -19,13 +19,13 @@ class UserService {
   }
 
   searchAll() {
-    const items = UserRepository.getAll()
-    return items;
+    const users = UserRepository.getAll()
+    return users;
   }
 
   search(search) {
-    const item = UserRepository.getOne(search);
-    return item;
+    const user = UserRepository.getOne(search);
+    return user;
   }
 }
 
