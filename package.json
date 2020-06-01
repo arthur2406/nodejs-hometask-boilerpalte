@@ -9,7 +9,8 @@
     "start": "node index.js",
     "build-front": "cd client | ls",
     "feedback": "node ./feedback/index.js",
-    "generate": "npm run test-local | npm run feedback"
+    "generate": "npm run test-local | npm run feedback",
+    "debug": "node --inspect index.js"
   },
   "repository": {
     "type": "git",
