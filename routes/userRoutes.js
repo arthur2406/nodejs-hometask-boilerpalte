@@ -2,60 +2,87 @@ const { Router } = require('express');
 const UserService = require('../services/userService');
 const { userValid } = require('../middlewares/user.validation.middleware');
 const { responseMiddleware } = require('../middlewares/response.middleware');
+const { errorHandlingMiddleware } = require('../middlewares/error.handling.middleware');
 
 const router = Router();
 
 
-router.get('/', (req, res, next) => {
-  const users = UserService.searchAll();
-  res.data = users;
-  res.status = 200;
-  next();
-}, responseMiddleware);
-
-router.get('/:id', (req, res, next) => {
-  const id = req.params.id;
-  const user = UserService.search({ id });
-  if (user) {
-    res.data = user;
-    res.status = 200;
-  } else {
-    res.err = { error: true, message: 'User not found' };
-    res.status = 404;
+router.get('/', async (req, res, next) => {
+  try {
+    const users = await UserService.searchAll();
+    res.data = users;
+    res.status(200);
+  } catch (err) {
+    next(err);
   }
   next();
 }, responseMiddleware);
 
+router.get('/:id', async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const user = await UserService.search({ id });
+    if (user) {
+      res.data = user;
+      res.status(200);
+    } else {
+      res.status(404);
+      next(new Error('User not found'));
+    }
+  } catch (err) {
+     next(err);
+  }
 
-router.post('/', userValid, (req, res, next) => {
-  const user = UserService.create(req.body);
-  res.data = user;
-  res.status = 201;
   next();
 }, responseMiddleware);
 
 
-router.put('/:id', userValid, (req, res, next) => {
-  const user = UserService.update(req.params.id, req.body);
-  res.data = user;
-  res.status = 204;
-  next();
-}, responseMiddleware);
-
-router.delete('/:id', (req, res, next) => {
-  const user = UserService.delete(req.params.id);
-  if (user) {
+router.post('/', userValid, async (req, res, next) => {
+  try {
+    const user = await UserService.create(req.body);
     res.data = user;
-    res.status = 204;
-  } else {
-    res.err = { error: true, message: 'User not found' };
-    res.status = 404;
+    res.status(201);
+  } catch (err) {
+    next(err);
+  }
+  
+  next();
+}, responseMiddleware);
+
+
+router.put('/:id', userValid, async (req, res, next) => {
+  try {
+    const user = await UserService.update(req.params.id, req.body);
+    if (user) {
+      res.data = user;
+      res.status(200);
+    } else {
+      res.status(404);
+      next(new Error('User not found'));
+    }
+  } catch (err) {
+    next(err);
   }
   next();
-
 }, responseMiddleware);
 
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const user = await UserService.delete(req.params.id);
+    if (user) {
+      res.data = user;
+      res.status(200);
+    } else {
+      res.status(404);
+      next(new Error('User not found'));
+    }
+  } catch (err) {
+    next(err);
+  }
+  
+  next();
+}, responseMiddleware);
 
-// TODO: Implement route controllers for user
+router.use(errorHandlingMiddleware);
 
 module.exports = router;
