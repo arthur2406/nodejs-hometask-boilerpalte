@@ -46,6 +46,15 @@ class UserService {
     
   }
 
+  async searchById(id) {
+    try {
+      const user = await UserRepository.getOneById(id);
+      return user;
+    } catch (err) {
+      this.handleRepositoryError(err);
+    }
+  }
+
   async search(search) {
     try {
       const user = await UserRepository.getOne(search);
@@ -53,7 +62,6 @@ class UserService {
     } catch (err) {
       this.handleRepositoryError(err);
     }
-    
   }
 }
 
