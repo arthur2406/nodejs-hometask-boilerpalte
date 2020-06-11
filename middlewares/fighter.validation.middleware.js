@@ -1,5 +1,5 @@
 const { fighter } = require('../models/fighter');
-const { valid } = require('./helpers.validation');
+const { validate } = require('./helpers.validation');
 
 const hasRequiredFields = body => {
   let hasRequiredFields = true;
@@ -31,11 +31,11 @@ const defenseIsValid = ({ defense }) => {
 
 const fighterValid = (req, res, next) => {
   const validations = new Map([
-    [hasRequiredFields, 'Incorrect amount of fields for fighter'],
+    [hasRequiredFields, 'Incorrect fields to create fighter'],
     [powerIsValid, 'Power should be between 1 and 100'],
     [defenseIsValid, 'Defense should be between 1 and 10']
   ]);
-  if (valid(validations, req, res)) next();
+  validate(validations, req, res, next);
 }
 
 

@@ -1,19 +1,17 @@
 const BAD_REQUEST_STATUS = 400;
 
 
-const valid = (validations, req, res) => {
-  let valid = true;
+const validate = (validations, req, res, next) => {
   validations.forEach((message, validation) => {
-    if (!validation(req.body) && valid) {
-      valid = false;
-      res.status = BAD_REQUEST_STATUS;
-      res.send({ error: true, message });
+    if (!validation(req.body)) {
+      res.status(BAD_REQUEST_STATUS);
+      next(new Error(message));
     }
   });
-  return valid;
+  next();
 };
 
 
 module.exports = {
-  valid,
+  validate,
 }
