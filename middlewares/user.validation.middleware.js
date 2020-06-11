@@ -1,5 +1,5 @@
 const { user } = require('../models/user');
-const { valid } = require('./helpers.validation');
+const { validate } = require('./helpers.validation');
 
 const passwordIsValid = ({ password }) => {
   const incorrectLength = password.length < 3;
@@ -49,7 +49,7 @@ const userValid = (req, res, next) => {
     [passwordIsValid, 'Not valid password. It should contain at least 3 characters and not contain \'password\'.']
   ]);
    
-  if (valid(validations, req, res)) next();
+  validate(validations, req, res, next);
 }
 
 
