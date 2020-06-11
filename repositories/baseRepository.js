@@ -1,6 +1,4 @@
-//const { dbAdapter } = require('../config/db');
 const { Pool } = require('pg');
-
 
 class BaseRepository {
   constructor(collectionName) {
@@ -36,11 +34,25 @@ class BaseRepository {
       
   }
 
+  async getOneById(id) {
+    try {
+      const query = 'SELECT * ' + 
+        `FROM ${this.collectionName} ` +
+        `WHERE id = '${id}';`;
+      const client = await this.getClient();
+      const { rows } = await client.query(query);
+      client.release();
+      return rows[0];
+    } catch (err) {
+      this.handleError(new Error('Invalid data'));
+    }
+  }
+
   async getOne(search) {
     try {
       const query = 'SELECT * ' + 
         `FROM ${this.collectionName} ` +
-        `WHERE id = '${search.id}';`;
+        `WHERE ${Object.keys(search)[0]} = '${search[Object.keys(search)[0]]}';`;
       const client = await this.getClient();
       const { rows } = await client.query(query);
       client.release();
