@@ -48,3 +48,14 @@ ADD CONSTRAINT gamers_email_unique UNIQUE (email);
 
 ALTER TABlE fighters 
 ADD CONSTRAINT fighters_name_unique UNIQUE (name);
+
+CREATE TABLE sessions (
+  sid VARCHAR NOT NULL COLLATE "default",
+	sess JSON NOT NULL,
+	expire timestamp(6) NOT NULL
+)
+WITH (OIDS=FALSE);
+
+ALTER TABLE sessions ADD CONSTRAINT session_pkey PRIMARY KEY (sid) NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+CREATE INDEX IDX_session_expire ON sessions(expire);
