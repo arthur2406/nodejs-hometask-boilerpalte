@@ -25,9 +25,9 @@ class FighterService {
     }
   }
 
-  async search(id) {
+  async searchById(id) {
     try {
-      const fighter = await FighterRepository.getOne(id);
+      const fighter = await FighterRepository.getOneById(id);
       return fighter;
     } catch (err) {
       this.handleRepositoryError(err);

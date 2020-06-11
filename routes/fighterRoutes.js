@@ -20,8 +20,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const id = req.params.id;
-    const fighter = await FighterService.search({ id });
+    const fighter = await FighterService.searchById(req.params.id);
     if (fighter) {
       res.data = fighter;
       res.status(200);
