@@ -40,8 +40,16 @@ ADD updating_date DATE;
 ALTER TABLE gamers
 ADD updating_date DATE;
 
+ALTER TABLE gamers
+ADD hash VARCHAR;
+
+ALTER TABLE gamers 
+ADD salt VARCHAR;
+
 ALTER TABLE fights
 ADD updating_date DATE;
+
+
 
 ALTER TABLE gamers 
 ADD CONSTRAINT gamers_email_unique UNIQUE (email);
@@ -59,3 +67,4 @@ WITH (OIDS=FALSE);
 ALTER TABLE sessions ADD CONSTRAINT session_pkey PRIMARY KEY (sid) NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 CREATE INDEX IDX_session_expire ON sessions(expire);
+
