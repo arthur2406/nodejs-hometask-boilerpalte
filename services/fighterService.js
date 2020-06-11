@@ -1,29 +1,57 @@
 const { FighterRepository } = require('../repositories/fighterRepository');
 
 class FighterService {
-  searchAll() {
-    const fighters = FighterRepository.getAll();
-    return fighters;
+
+  handleRepositoryError(err) {
+    throw err;
   }
 
-  create(data) {
-    const fighter = FighterRepository.create(data);
-    return fighter;
+  async searchAll() {
+    try {
+      const fighters = await FighterRepository.getAll();
+      return fighters;
+    } catch (err) {
+      this.handleRepositoryError(err);
+    }
+    
   }
 
-  search(id) {
-    const fighter = FighterRepository.getOne(id);
-    return fighter;
+  async create(data) {
+    try {
+      const fighter = await FighterRepository.create(data);
+      return fighter;
+    } catch (err) {
+      this.handleRepositoryError(err);
+    }
   }
 
-  update(id, dataToUpdate) {
-    const fighter = FighterRepository.update(id, dataToUpdate);
-    return fighter;
+  async search(id) {
+    try {
+      const fighter = await FighterRepository.getOne(id);
+      return fighter;
+    } catch (err) {
+      this.handleRepositoryError(err);
+    }
   }
 
-  delete(id) {
-    const fighter = FighterRepository.delete(id);
-    return fighter;
+  async update(id, dataToUpdate) {
+    try {
+      const fighter = await FighterRepository.update(id, dataToUpdate);
+      return fighter;
+    } catch (err) {
+      this.handleRepositoryError(err);
+    }
+    
+  }
+
+  async delete(id) {
+    try {
+      const fighter = await FighterRepository.delete(id);
+      return fighter;
+    } catch (err) {
+      this.handleRepositoryError(err);
+    }
+    
   }
 }
 

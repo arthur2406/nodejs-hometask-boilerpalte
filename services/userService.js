@@ -2,30 +2,58 @@ const { UserRepository } = require('../repositories/userRepository');
 
 class UserService {
 
-  // TODO: Implement methods to work with user
-  delete(id) {
-    const user = UserRepository.delete(id);
-    return user;
+  handleRepositoryError(err) {
+    throw err;
   }
 
-  update(id, dataToUpdate) {
-    const user = UserRepository.update(id, dataToUpdate);
-    return user;
+  async delete(id) {
+    try {
+      const user = await UserRepository.delete(id);
+      return user;
+    } catch (err) {
+      this.handleRepositoryError(err);
+    }
+    
   }
 
-  create(data) {
-    const user = UserRepository.create(data);
-    return user;
+  async update(id, dataToUpdate) {
+    try {
+      const user = await UserRepository.update(id, dataToUpdate);
+      return user;
+    } catch (err) {
+      this.handleRepositoryError(err);
+    }
+    
   }
 
-  searchAll() {
-    const users = UserRepository.getAll()
-    return users;
+  async create(data) {
+    try {
+      const user = await UserRepository.create(data);
+      return user;
+    } catch (err) {
+      this.handleRepositoryError(err);
+    }
+    
   }
 
-  search(search) {
-    const user = UserRepository.getOne(search);
-    return user;
+  async searchAll() {
+    try {
+      const users = await UserRepository.getAll()
+      return users;
+    } catch (err) {
+      this.handleRepositoryError(err);
+    }
+    
+  }
+
+  async search(search) {
+    try {
+      const user = await UserRepository.getOne(search);
+      return user;
+    } catch (err) {
+      this.handleRepositoryError(err);
+    }
+    
   }
 }
 
