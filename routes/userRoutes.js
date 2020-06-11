@@ -3,6 +3,7 @@ const UserService = require('../services/userService');
 const { userValid } = require('../middlewares/user.validation.middleware');
 const { responseMiddleware } = require('../middlewares/response.middleware');
 const { errorHandlingMiddleware } = require('../middlewares/error.handling.middleware');
+const { genPassword } = require('../utils/password.utils'); 
 
 const router = Router();
 
@@ -20,8 +21,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const id = req.params.id;
-    const user = await UserService.search({ id });
+    const user = await UserService.searchById(req.params.id);
     if (user) {
       res.data = user;
       res.status(200);
@@ -39,6 +39,9 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', userValid, async (req, res, next) => {
   try {
+    const { salt, hash } =  genPassword(req.body.password);
+    req.body.hash = hash;
+    req.body.salt = salt;
     const user = await UserService.create(req.body);
     res.data = user;
     res.status(201);
