@@ -1,8 +1,8 @@
 const UserService = require('./userService');
 
 class AuthService {
-    login(userData) {
-        const user = UserService.search(userData);
+    async login(userData) {
+        const user = await UserService.search(userData);
         if(!user) {
             throw Error('User not found');
         }
