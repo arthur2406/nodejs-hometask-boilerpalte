@@ -2,7 +2,7 @@ const { BaseRepository } = require('./baseRepository');
 
 class UserRepository extends BaseRepository {
     constructor() {
-        super('users');
+        super('gamers');
     }
 }
 
